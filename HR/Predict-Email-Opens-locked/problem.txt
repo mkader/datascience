@@ -1,0 +1,27 @@
+Predict Email Opens locked
+Problem
+We will provide you with metadata for emails sent to LinkedIn users over a certain period of time. This metadata contains specific information about:
+
+	The user the email was sent to.
+	The email that was sent.
+	The user's reaction to the email, including (among other things) whether or not the user opened the email.
+
+Given the metadata for additional future emails, you must predict whether or not each user will open an email.
+
+Dataset
+training_dataset.csv: This file contains the details for various emails sent. If an email was opened, then the value of the opened attribute is 1; otherwise, its value is 0.
+
+test_dataset.csv: This file contains the test dataset. All fields relevant to the user's reaction to the email are missing in this dataset. You must predict the value of the opened attribute for each email.
+
+attributes.pdf: This file contains definitions for all the attributes given in the dataset.
+
+Submission Details
+The output file prediction.csv) containing the predicted values of the opened attribute for each of the emails given in test_dataset.csv.
+If the uploaded file does not contain the same number of rows as the test_dataset.csv file, the grader will reject it.
+Each line of the uploaded file must be either a  1 or a 0 denoting your model's prediction for that line in the test dataset. If any line contains anything other than a 1 or a 0, its validation will fail.
+A valid prediction.csv file has the following format:
+1
+1
+0
+1
+0
