@@ -1,0 +1,131 @@
+/*
+SELECT *  FROM hackerank.predict_email_opens;
+*/
+#486048
+SELECT 
+	count(*)
+FROM 
+	hackerank.predict_email_opens
+where 
+	mail_category in ('mail_category_1','mail_category_4', 'mail_category_13', 'mail_category_3', 
+	'mail_category_15', 'mail_category_7')  #435890
+	or mail_type in ('mail_type_1','mail_type_2','mail_type_3') #484889
+	or hacker_timezone in ('18000', '-14400', '-25200', '7200','-18000', '10800', '3600') #485938
+	or contest_login_count in ('1','2','3','4','0','5') #486019
+	or contest_login_count_1_days in ('0') #486048
+	or contest_login_count_30_days in ('0','1') #486048
+	or contest_login_count_365_days in ('1','2','0','3','4') #486048
+	or contest_login_count_7_days in ('0') #486048
+	
+union all
+SELECT 
+	count(*)
+FROM 
+	hackerank.predict_email_opens
+where 
+	opened ='TRUE'
+	and (mail_category in ('mail_category_1','mail_category_4', 'mail_category_13', 'mail_category_3',
+	'mail_category_15', 'mail_category_7') #147880
+	or mail_type in ('mail_type_1','mail_type_2','mail_type_3') #160822
+	or hacker_timezone in ('18000', '-14400', '-25200', '7200','-18000', '10800', '3600') #161291
+	or contest_login_count in ('1','2','3','4','0','5') #161338
+	or contest_login_count_1_days in ('0') #161347
+	or contest_login_count_30_days in ('0','1') #161347
+	or contest_login_count_365_days in ('1','2','0','3','4') #161347
+	or contest_login_count_7_days in ('0') #161347
+	)
+union all
+SELECT 
+	count(*)
+FROM 
+	hackerank.predict_email_opens
+where 
+	opened ='FALSE'
+	and (mail_category in ('mail_category_1','mail_category_4', 'mail_category_13', 'mail_category_3',
+	'mail_category_15', 'mail_category_7') #288010
+	or mail_type in ('mail_type_1','mail_type_2','mail_type_3') #324067
+	or hacker_timezone in ('18000', '-14400', '-25200', '7200','-18000', '10800', '3600') #324647
+	or contest_login_count in ('1','2','3','4','0','5') #324681
+	or contest_login_count_1_days in ('0') #324701
+	or contest_login_count_30_days in ('0','1') #324701
+	or contest_login_count_365_days in ('1','2','0','3','4') #324701
+	or contest_login_count_7_days in ('0') #324701
+	)
+	
+/*union all
+SELECT 
+	count(*)
+FROM 
+	hackerank.predict_email_opens
+where 
+	mail_category not in ('mail_category_1','mail_category_4', 'mail_category_13', 'mail_category_3',
+	'mail_category_15', 'mail_category_7') #50158
+union all 
+SELECT 
+	count(*)
+FROM 
+	hackerank.predict_email_opens
+where 
+	mail_category not in ('mail_category_1','mail_category_4', 'mail_category_13', 'mail_category_3',
+	'mail_category_15', 'mail_category_7')
+	and opened ='TRUE'
+union all 
+SELECT 
+	count(*) 
+FROM 
+	hackerank.predict_email_opens
+where 
+	mail_category not in ('mail_category_1','mail_category_4', 'mail_category_13', 'mail_category_3',
+	'mail_category_15', 'mail_category_7')
+	and opened ='FALSE';*/
+	
+	
+	
+	
+	
+	
+	
+	
+/*
+SELECT 
+	count(*)
+FROM 
+	hackerank.predict_email_opens
+where 
+	mail_category in ('mail_category_1','mail_category_4', 'mail_category_13', 'mail_category_3', 
+	'mail_category_15', 'mail_category_7')  #435890
+	and mail_type in ('mail_type_1','mail_type_2','mail_type_3') #435890
+	and hacker_timezone in ('18000', '-14400', '-25200', '7200','-18000', '10800', '3600') #383358
+	and contest_login_count in ('1','2','3','4','0','5') #322785
+	and contest_login_count_1_days in ('0') #320829
+union all
+SELECT 
+	count(*)
+FROM 
+	hackerank.predict_email_opens
+where 
+	opened ='TRUE'
+	and mail_category in ('mail_category_1','mail_category_4', 'mail_category_13', 'mail_category_3',
+	'mail_category_15', 'mail_category_7') #147880
+	and mail_type in ('mail_type_1','mail_type_2','mail_type_3') #147880
+	and hacker_timezone in ('18000', '-14400', '-25200', '7200','-18000', '10800', '3600') #129717
+	and contest_login_count in ('1','2','3','4','0','5') #109571
+	and contest_login_count_1_days in ('0') #108766
+	
+union all
+SELECT 
+	count(*)
+FROM 
+	hackerank.predict_email_opens
+where 
+	opened ='FALSE'
+	and mail_category in ('mail_category_1','mail_category_4', 'mail_category_13', 'mail_category_3',
+	'mail_category_15', 'mail_category_7') #288010
+	and mail_type in ('mail_type_1','mail_type_2','mail_type_3') #253641
+	and hacker_timezone in ('18000', '-14400', '-25200', '7200','-18000', '10800', '3600') #253641
+	and contest_login_count in ('1','2','3','4','0','5') #213214
+	and contest_login_count_1_days in ('0') #212063
+	
+	
+*/
+	
