@@ -1,0 +1,379 @@
+submissions_count_contest >= .75
+submissions_count_365_days >.9
+submissions_count_master  >= .80
+submissions_count>.75
+submissions_count_contest_7_days >.50
+submissions_count_contest_30_days >.50
+submissions_count_contest_365_days>.8
+submissions_count_master_30_days >.50
+submissions_count_master_365_days > .80
+submissions_count_30_days >.65
+contest_login_count_1_days
+
+
+submissions_count_365_days >.9
+submissions_count_master  >= .80
+submissions_count>.75
+submissions_count_contest >0.50
+submissions_count_contest_7_days >.50
+submissions_count_contest_30_days >.50
+submissions_count_contest_365_days>.8
+submissions_count_master_30_days >.50
+submissions_count_master_365_days
+contest_login_count_1_days
+
+
+
+update 
+	hackerank.predict_email_opens_testdata as upeo
+	inner join 
+	(
+		select 
+			distinct peo.user_id 
+		from 
+			hackerank.predict_email_opens_testdata as peo
+		where 
+			peo.submissions_count_master  in 
+			(
+				'311',
+				'383',
+				'393',
+				'394',
+				'404',
+				'452',
+				'468',
+				'474',
+				'488',
+				'489',
+				'493',
+				'505',
+				'506',
+				'508',
+				'513',
+				'526',
+				'531',
+				'534',
+				'538',
+				'544',
+				'551',
+				'553',
+				'556',
+				'564',
+				'569',
+				'573',
+				'574',
+				'582',
+				'586',
+				'596',
+				'598',
+				'600',
+				'606',
+				'612',
+				'613',
+				'618',
+				'620',
+				'624',
+				'625',
+				'626',
+				'640',
+				'654',
+				'660',
+				'691',
+				'725',
+				'763',
+				'849',
+'908',
+			)
+	) tupeo on tupeo.user_id = upeo.user_id
+set 
+	predictions = 1
+	
+
+-------------------------------------
+select 
+	opened,count(*) 
+from
+	hackerank.predict_email_opens
+where
+	#opened='TRUE' and
+	user_id in 
+	(
+		select 
+			distinct user_id 
+		from 
+			hackerank.predict_email_opens
+		where 
+			submissions_count_365_days  in 
+			(
+				select
+					distinct sc365d.submissions_count_365_days
+					/*, sc365d_t.count, sc365d_f.count, sc365d.count, sc365d_t.count/sc365d.count*/
+				from (
+						select 
+							submissions_count_365_days, count(*) count
+						from 
+							hackerank.predict_email_opens
+						group by
+							submissions_count_365_days
+					)as sc365d left join
+					(
+						select 
+							submissions_count_365_days, count(*) count
+						from 
+							hackerank.predict_email_opens
+						where
+							opened='FALSE'
+						group by
+							submissions_count_365_days
+					) as sc365d_f on sc365d.submissions_count_365_days = sc365d_f.submissions_count_365_days left join
+					(
+						select 
+							submissions_count_365_days, count(*) count
+						from 
+							hackerank.predict_email_opens
+						where
+							opened='TRUE'
+						group by
+							submissions_count_365_days
+					) as sc365d_t on sc365d_t.submissions_count_365_days = sc365d.submissions_count_365_days
+				where
+					sc365d_t.count/sc365d.count >= .9
+			)
+	)
+group by
+	opened
+
+
+
+
+------------------------------------------------------
+
+
+update 
+	hackerank.predict_email_opens as upeo
+	inner join 
+	(
+		select 
+			distinct peo.user_id 
+		from 
+			hackerank.predict_email_opens as peo
+		where 
+			peo.submissions_count_365_days  in 
+			(
+				select
+					distinct sc365d.submissions_count_365_days
+					/*, sc365d_t.count, sc365d_f.count, sc365d.count, sc365d_t.count/sc365d.count*/
+				from (
+						select 
+							submissions_count_365_days, count(*) count
+						from 
+							hackerank.predict_email_opens as peoa
+						group by
+							submissions_count_365_days
+					)as sc365d left join
+					(
+						select 
+							submissions_count_365_days, count(*) count
+						from 
+							hackerank.predict_email_opens as peof
+						where
+							opened='FALSE'
+						group by
+							submissions_count_365_days
+					) as sc365d_f on sc365d.submissions_count_365_days = sc365d_f.submissions_count_365_days left join
+					(
+						select 
+							submissions_count_365_days, count(*) count
+						from 
+							hackerank.predict_email_opens as peot
+						where
+							opened='TRUE'
+						group by
+							submissions_count_365_days
+					) as sc365d_t on sc365d_t.submissions_count_365_days = sc365d.submissions_count_365_days
+				where
+					sc365d_t.count/sc365d.count >= .9
+			)
+	) tupeo on tupeo.user_id = upeo.user_id
+set 
+	predictions = 1
+-----------------------------------------------------------	
+
+
+
+SELECT 
+	count(*)
+FROM 
+	hackerank.predict_email_opens
+where
+contest_login_count_1_days	in ('0')
+or contest_participation_count_1_days	in ('0')
+or forum_expert_count	in ('0')
+or forum_questions_count	in ('0')
+or hacker_confirmation	in ('TRUE')
+or ipn_read_1_days	in ('0')
+or ipn_read_7_days	in ('0')
+or submissions_count_master_1_days	in ('0')
+or submissions_count_1_days	in ('0')
+or submissions_count_contest_7_days	in ('0')
+or submissions_count_contest_1_days	in ('0')
+
+
+
+
+SELECT 
+	count(*)
+FROM 
+	hackerank.predict_email_opens
+where 
+	mail_category in ('mail_category_15','mail_category_1', 'mail_category_3', 'mail_category_13', 
+	'mail_category_4', 'mail_category_7')  #435890
+	or mail_type in ('mail_type_1','mail_type_3','mail_type_2') #484889
+	or hacker_timezone in ('18000', '-14400', '-25200', '7200','-18000', '10800', '3600') #485938
+	or contest_login_count in ('1','2','3','4','0','5') #486019
+	or contest_login_count_1_days in ('0') #486048
+	or contest_login_count_30_days in ('0','1','2') #486048
+	or contest_login_count_365_days in ('1','2','0','3','4') #486048
+	or contest_login_count_7_days in ('0','1') #486048
+	or contest_participation_count in ('1','2','3','4','5','6') 
+	or contest_participation_count_1_days in ('0') 
+	or contest_participation_count_30_days in ('0','1','2','3') 
+	or contest_participation_count_365_days in ('1','2','3','0','4','5') 
+	or contest_participation_count_7_days in ('0','1','2') 
+	or forum_comments_count in ('0','1') 
+	or forum_count in ('0','1') 
+	or forum_expert_count in ('0') 
+	or forum_questions_count in ('0') 
+	or hacker_confirmation in ('TRUE','FALSE') 
+	or ipn_count in ('1','2','0','3')
+	or ipn_count_1_days in ('0','1')
+	or ipn_count_30_days in ('0','1','2','3','4','5')
+	or ipn_count_365_days in ('1','2','0','3')
+	or ipn_count_7_days in ('0','1','7','2','3')
+	or ipn_read in ('0','1','2','3','4')
+	or ipn_read_1_days in ('0')
+	or ipn_read_30_days in ('0','1','2')
+	or ipn_read_365_days in ('0','1','2','3','4')
+	or ipn_read_7_days in ('0','1')
+	or submissions_count in ('0','1','2')
+	or submissions_count_1_days in ('0')
+	or submissions_count_30_days in ('0','1','2','3','4')
+	or submissions_count_365_days in ('0','1','2')
+	or submissions_count_7_days in ('0','1','2')
+	or submissions_count_contest in ('0','1','2')
+	or submissions_count_contest_1_days in ('0')
+	or submissions_count_contest_30_days in ('0')
+	or submissions_count_contest_365_days in ('0','1')
+	or submissions_count_contest_7_days in ('0')
+	or submissions_count_master in ('0','1','2','3')
+	or submissions_count_master_1_days in ('0')
+	or submissions_count_master_30_days in ('0','1','2','3')
+	or submissions_count_master_365_days in ('0','1','2','3')
+	or submissions_count_master_7_days in ('0','1','2')
+								
+	
+union all
+SELECT 
+	count(*)
+FROM 
+	hackerank.predict_email_opens
+where 
+	opened ='TRUE'
+	and (mail_category in ('mail_category_1','mail_category_4', 'mail_category_13', 'mail_category_3',
+	'mail_category_15', 'mail_category_7') #147880
+	or mail_type in ('mail_type_1','mail_type_2','mail_type_3') #160822
+	or hacker_timezone in ('18000', '-14400', '-25200', '7200','-18000', '10800', '3600') #161291
+	or contest_login_count in ('1','2','3','4','0','5') #161338
+	or contest_login_count_1_days in ('0') #161347
+	or contest_login_count_30_days in ('0','1') #161347
+	or contest_login_count_365_days in ('1','2','0','3','4') #161347
+	or contest_login_count_7_days in ('0') #161347
+	or contest_participation_count in ('1','2','3','4','5','6') 
+	or contest_participation_count_1_days in ('0') 
+	or contest_participation_count_30_days in ('0','1','2','3') 
+	or contest_participation_count_365_days in ('1','2','3','0','4','5') 
+	or contest_participation_count_7_days in ('0','1','2') 
+	or forum_comments_count in ('0','1') 
+	or forum_count in ('0','1') 
+	or forum_expert_count in ('0') 
+	or forum_questions_count in ('0') 
+	or hacker_confirmation in ('TRUE','FALSE') 
+	or ipn_count in ('1','2','0','3')
+	or ipn_count_1_days in ('0','1')
+	or ipn_count_30_days in ('0','1','2','3','4','5')
+	or ipn_count_365_days in ('1','2','0','3')
+	or ipn_count_7_days in ('0','1','7','2','3')
+	or ipn_read in ('0','1','2','3','4')
+	or ipn_read_1_days in ('0')
+	or ipn_read_30_days in ('0','1','2')
+	or ipn_read_365_days in ('0','1','2','3','4')
+	or ipn_read_7_days in ('0','1')
+	or submissions_count in ('0','1','2')
+	or submissions_count_1_days in ('0')
+	or submissions_count_30_days in ('0','1','2','3','4')
+	or submissions_count_365_days in ('0','1','2')
+	or submissions_count_7_days in ('0','1','2')
+	or submissions_count_contest in ('0','1','2')
+	or submissions_count_contest_1_days in ('0')
+	or submissions_count_contest_30_days in ('0')
+	or submissions_count_contest_365_days in ('0','1')
+	or submissions_count_contest_7_days in ('0')
+	or submissions_count_master in ('0','1','2','3')
+	or submissions_count_master_1_days in ('0')
+	or submissions_count_master_30_days in ('0','1','2','3')
+	or submissions_count_master_365_days in ('0','1','2','3')
+	or submissions_count_master_7_days in ('0','1','2')
+	)
+union all
+SELECT 
+	count(*)
+FROM 
+	hackerank.predict_email_opens
+where 
+	opened ='FALSE'
+	and (mail_category in ('mail_category_1','mail_category_4', 'mail_category_13', 'mail_category_3',
+	'mail_category_15', 'mail_category_7') #288010
+	or mail_type in ('mail_type_1','mail_type_2','mail_type_3') #324067
+	or hacker_timezone in ('18000', '-14400', '-25200', '7200','-18000', '10800', '3600') #324647
+	or contest_login_count in ('1','2','3','4','0','5') #324681
+	or contest_login_count_1_days in ('0') #324701
+	or contest_login_count_30_days in ('0','1') #324701
+	or contest_login_count_365_days in ('1','2','0','3','4') #324701
+	or contest_login_count_7_days in ('0') #324701
+	or contest_participation_count in ('1','2','3','4','5','6') 
+	or contest_participation_count_1_days in ('0') 
+	or contest_participation_count_30_days in ('0','1','2','3') 
+	or contest_participation_count_365_days in ('1','2','3','0','4','5') 
+	or contest_participation_count_7_days in ('0','1','2') 
+	or forum_comments_count in ('0','1') 
+	or forum_count in ('0','1') 
+	or forum_expert_count in ('0') 
+	or forum_questions_count in ('0') 
+	or hacker_confirmation in ('TRUE','FALSE') 
+	or ipn_count in ('1','2','0','3')
+	or ipn_count_1_days in ('0','1')
+	or ipn_count_30_days in ('0','1','2','3','4','5')
+	or ipn_count_365_days in ('1','2','0','3')
+	or ipn_count_7_days in ('0','1','7','2','3')
+	or ipn_read in ('0','1','2','3','4')
+	or ipn_read_1_days in ('0')
+	or ipn_read_30_days in ('0','1','2')
+	or ipn_read_365_days in ('0','1','2','3','4')
+	or ipn_read_7_days in ('0','1')
+	or submissions_count in ('0','1','2')
+	or submissions_count_1_days in ('0')
+	or submissions_count_30_days in ('0','1','2','3','4')
+	or submissions_count_365_days in ('0','1','2')
+	or submissions_count_7_days in ('0','1','2')
+	or submissions_count_contest in ('0','1','2')
+	or submissions_count_contest_1_days in ('0')
+	or submissions_count_contest_30_days in ('0')
+	or submissions_count_contest_365_days in ('0','1')
+	or submissions_count_contest_7_days in ('0')
+	or submissions_count_master in ('0','1','2','3')
+	or submissions_count_master_1_days in ('0')
+	or submissions_count_master_30_days in ('0','1','2','3')
+	or submissions_count_master_365_days in ('0','1','2','3')
+	or submissions_count_master_7_days in ('0','1','2')
+	)
+	
